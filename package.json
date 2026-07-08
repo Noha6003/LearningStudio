@@ -7,6 +7,7 @@
     "packages/*"
   ],
   "scripts": {
+    "postinstall": "npm run db:generate --workspace=@learningma/database",
     "build": "turbo run build",
     "dev": "turbo run dev --parallel",
     "lint": "turbo run lint"
