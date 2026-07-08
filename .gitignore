@@ -1,0 +1,23 @@
+# Dependencies
+node_modules/
+**/node_modules/
+
+# Next.js Build Outputs
+.next/
+**/.next/
+
+# Turborepo Build Outputs
+.turbo/
+**/.turbo/
+dist/
+**/dist/
+
+# Local Environment Variables
+.env
+.env.local
+.env.production
+
+# System Files
+.DS_Store
+Thumbs.db
+*.log
