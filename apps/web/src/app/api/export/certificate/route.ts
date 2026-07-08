@@ -152,7 +152,7 @@ export async function GET(req: Request) {
       <div class="certificate-container">
         <div class="border-inner">
           <div>
-            <h1>LearningMa OS</h1>
+            <h1>Luminary OS</h1>
             <h2>Certificate of Achievement</h2>
           </div>
 
@@ -179,7 +179,7 @@ export async function GET(req: Request) {
             </div>
 
             <div class="signature-block">
-              LearningMa AI<br>
+              Luminary AI<br>
               <span style="font-weight: 400; font-size: 9px;">System Director</span>
             </div>
           </div>

@@ -16,7 +16,7 @@ import { AdminDashboard } from '@/components/dashboard/admin-dashboard';
 export default function DashboardPage() {
   const { data: session, status } = useSession();
   const router = useRouter();
-  const { themeMode, toggleThemeMode } = useThemeMode();
+  const { themeMode, toggleThemeMode, themeColor, setThemeColor } = useThemeMode();
   
   // Protect page client-side
   useEffect(() => {
@@ -63,7 +63,7 @@ export default function DashboardPage() {
             <ArrowLeft className="h-4 w-4 mr-1" />
           </Button>
           <span className="font-extrabold text-lg bg-gradient-to-r from-brand-primary to-brand-secondary bg-clip-text text-transparent">
-            LearningMa OS
+            Luminary
           </span>
           <span className="text-xs px-2 py-0.5 rounded-full bg-foreground/10 text-foreground font-semibold uppercase tracking-wider">
             {role?.replace('SUPER_ADMIN', 'ADMIN')}
@@ -74,6 +74,16 @@ export default function DashboardPage() {
           <span className="text-sm font-medium text-foreground/80 hidden sm:inline">
             Hello, <strong className="text-foreground">{userName}</strong>
           </span>
+
+          <select 
+            value={themeColor} 
+            onChange={(e) => setThemeColor(e.target.value as any)}
+            className="bg-card border border-border rounded-xl px-2 py-1 text-xs font-bold focus:outline-none text-foreground cursor-pointer shadow-sm"
+          >
+            <option value="light">☀️ Light</option>
+            <option value="dark">🌙 Dark</option>
+            <option value="purple">🔮 Purple</option>
+          </select>
 
           <Button 
             onClick={toggleThemeMode} 

@@ -60,7 +60,7 @@ export default function LiveQuizProjectorPage() {
       <header className="flex items-center justify-between border-b border-white/10 pb-4">
         <div className="flex items-center space-x-2">
           <GraduationCap className="h-8 w-8 text-brand-primary animate-pulse" />
-          <span className="font-extrabold text-xl tracking-wider">LearningMa Live Lobbies</span>
+          <span className="font-extrabold text-xl tracking-wider">Luminary Live Lobbies</span>
         </div>
         <div className="flex items-center space-x-2 text-xs">
           <div className={`h-2.5 w-2.5 rounded-full ${connected ? 'bg-brand-success animate-ping' : 'bg-brand-danger'}`}></div>

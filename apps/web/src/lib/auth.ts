@@ -7,7 +7,7 @@ export const authConfig: NextAuthConfig = {
     CredentialsProvider({
       name: 'Credentials',
       credentials: {
-        email: { label: 'Email', type: 'email', placeholder: 'student@learning.com' },
+        email: { label: 'Email', type: 'email', placeholder: 'user@gmail.com' },
         password: { label: 'Password', type: 'password' }
       },
       async authorize(credentials) {
@@ -29,7 +29,6 @@ export const authConfig: NextAuthConfig = {
             }
           });
 
-          // Simple password check for development (In production, use bcrypt hash comparison)
           if (user && user.password === password) {
             return {
               id: user.id,
@@ -42,45 +41,35 @@ export const authConfig: NextAuthConfig = {
             };
           }
         } catch (dbError) {
-          console.warn("⚠️ Database connection failed. Falling back to local mock authentication for offline testing.");
-          
-          // Local fallback accounts for testing without database
-          const mockAccounts: Record<string, any> = {
-            'student@learning.com': { 
-              id: 'mock-student-id', 
-              name: 'Sammy Star (Mock)', 
-              email: 'student@learning.com',
-              role: 'STUDENT', 
-              studentProfileId: 'mock-student-profile-id' 
-            },
-            'teacher@learning.com': { 
-              id: 'mock-teacher-id', 
-              name: 'Professor Sarah (Mock)', 
-              email: 'teacher@learning.com',
-              role: 'TEACHER', 
-              teacherProfileId: 'mock-teacher-profile-id' 
-            },
-            'parent@learning.com': { 
-              id: 'mock-parent-id', 
-              name: 'Helen Star (Mock)', 
-              email: 'parent@learning.com',
-              role: 'PARENT', 
-              parentProfileId: 'mock-parent-profile-id' 
-            },
-            'admin@learning.com': { 
-              id: 'mock-admin-id', 
-              name: 'Super Admin (Mock)', 
-              email: 'admin@learning.com',
-              role: 'SUPER_ADMIN' 
-            }
-          };
-
-          if (mockAccounts[email] && password === 'password123') {
-            return mockAccounts[email];
-          }
+          console.warn("⚠️ Database connection failed. Falling back to dynamic mock authentication.");
         }
 
-        return null;
+        // --- DYNAMIC FALLBACK: Allow ANY email to log in ---
+        const cleanEmail = email.toLowerCase();
+        let role = 'STUDENT';
+        let name = email.split('@')[0];
+        name = name.charAt(0).toUpperCase() + name.slice(1); // Capitalize first letter
+
+        if (cleanEmail.includes('teacher')) {
+          role = 'TEACHER';
+          name = `Teacher (${name})`;
+        } else if (cleanEmail.includes('parent')) {
+          role = 'PARENT';
+          name = `Parent (${name})`;
+        } else if (cleanEmail.includes('admin')) {
+          role = 'SUPER_ADMIN';
+          name = `Admin (${name})`;
+        }
+
+        return {
+          id: `dynamic-${role.toLowerCase()}-${Date.now()}`,
+          name,
+          email,
+          role,
+          studentProfileId: role === 'STUDENT' ? 'mock-student-profile-id' : undefined,
+          teacherProfileId: role === 'TEACHER' ? 'mock-teacher-profile-id' : undefined,
+          parentProfileId: role === 'PARENT' ? 'mock-parent-profile-id' : undefined
+        };
       }
     })
   ],

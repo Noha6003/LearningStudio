@@ -127,7 +127,7 @@ export default function LandingPage() {
           </div>
 
           <div className="flex flex-wrap gap-1.5 justify-center border-t border-border/40 pt-4 w-full">
-            {(['light', 'dark', 'neon', 'space', 'anime', 'minimal'] as const).map(color => (
+            {(['light', 'dark', 'purple'] as const).map(color => (
               <button
                 key={color}
                 onClick={() => setThemeColor(color)}
