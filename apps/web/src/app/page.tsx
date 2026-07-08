@@ -14,7 +14,6 @@ export default function LandingPage() {
   const router = useRouter();
   const { themeMode, themeColor, setThemeMode, setThemeColor } = useThemeMode();
 
-  // If already logged in, show dashboard link
   const handleGoToDashboard = () => {
     router.push('/dashboard');
   };
@@ -32,24 +31,31 @@ export default function LandingPage() {
     show: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.15
+        staggerChildren: 0.12
       }
     }
   };
 
   const itemVariants = {
-    hidden: { y: 20, opacity: 0 },
-    show: { y: 0, opacity: 1 }
+    hidden: { y: 25, opacity: 0 },
+    show: { y: 0, opacity: 1, transition: { type: 'spring', stiffness: 100 } }
   };
 
   return (
-    <div className="flex-1 flex flex-col justify-between overflow-x-hidden min-h-screen">
+    <div className="flex-1 flex flex-col justify-between overflow-x-hidden min-h-screen bg-gradient-to-br from-background via-card/10 to-background">
+      
+      {/* Background Decorative Glow Blobs */}
+      <div className="absolute top-0 left-1/4 w-96 h-96 bg-brand-primary/10 rounded-full blur-[100px] pointer-events-none z-0" />
+      <div className="absolute bottom-10 right-1/4 w-[400px] h-[400px] bg-brand-secondary/5 rounded-full blur-[120px] pointer-events-none z-0" />
+
       {/* Navbar */}
-      <header className="sticky top-0 z-40 w-full border-b border-border/40 bg-background/80 backdrop-blur-md px-6 py-4 flex items-center justify-between">
-        <div className="flex items-center space-x-2">
-          <GraduationCap className="h-8 w-8 text-brand-primary animate-bounce" />
-          <span className="font-extrabold text-2xl tracking-wider bg-gradient-to-r from-brand-primary to-brand-secondary bg-clip-text text-transparent">
-            LearningMa
+      <header className="sticky top-0 z-40 w-full border-b border-border/30 bg-background/60 backdrop-blur-lg px-6 py-4 flex items-center justify-between shadow-sm">
+        <div className="flex items-center space-x-2.5">
+          <div className="h-9 w-9 rounded-xl bg-brand-primary/10 flex items-center justify-center border border-brand-primary/20">
+            <GraduationCap className="h-5 w-5 text-brand-primary" />
+          </div>
+          <span className="font-black text-2xl tracking-tight bg-gradient-to-r from-brand-primary via-indigo-400 to-brand-secondary bg-clip-text text-transparent">
+            Luminary
           </span>
         </div>
         
@@ -67,37 +73,37 @@ export default function LandingPage() {
       </header>
 
       {/* Hero Section */}
-      <main className="flex-1 max-w-7xl w-full mx-auto px-6 py-12 flex flex-col items-center justify-center text-center space-y-12">
+      <main className="flex-1 max-w-7xl w-full mx-auto px-6 py-16 flex flex-col items-center justify-center text-center space-y-12 z-10">
         <motion.div 
-          initial={{ scale: 0.9, opacity: 0 }}
+          initial={{ scale: 0.96, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
-          transition={{ duration: 0.5 }}
+          transition={{ duration: 0.5, ease: 'easeOut' }}
           className="space-y-6 max-w-3xl"
         >
-          <div className="inline-flex items-center space-x-2 bg-brand-primary/10 border border-brand-primary/20 px-4 py-1.5 rounded-full text-xs font-semibold text-brand-primary uppercase tracking-wider">
-            <Sparkles className="h-3.5 w-3.5" />
+          <div className="inline-flex items-center space-x-2 bg-brand-primary/10 border border-brand-primary/25 px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest text-brand-primary shadow-sm">
+            <Sparkles className="h-3.5 w-3.5 animate-pulse" />
             <span>The Operating System for Education</span>
           </div>
 
-          <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight leading-tight">
-            As Fun as <span className="text-brand-secondary">Kahoot</span>,<br />
-            As Simple as <span className="text-brand-primary">Classroom</span>
+          <h1 className="text-5xl md:text-7xl font-black tracking-tight leading-none text-foreground">
+            As Fun as <span className="bg-gradient-to-r from-brand-secondary to-pink-500 bg-clip-text text-transparent">Kahoot</span>,<br />
+            As Simple as <span className="bg-gradient-to-r from-brand-primary to-indigo-400 bg-clip-text text-transparent">Classroom</span>
           </h1>
 
-          <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto">
-            An AI-first, adaptive learning platform custom-tailored for every student, featuring interactive game maps for kids and minimal workspaces for teachers.
+          <p className="text-md md:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+            Luminary combines Socratic AI tutoring, dynamic quest world maps, and infinite canvas whiteboards into a premium, clean workspace for classrooms.
           </p>
         </motion.div>
 
-        {/* Global Style Sandbox Controls */}
+        {/* Interactive Style Sandbox Controls */}
         <motion.div 
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 0.3 }}
-          className="flex flex-col items-center space-y-4 bg-card/60 p-6 rounded-2xl border border-border/80 max-w-xl w-full"
+          transition={{ delay: 0.25 }}
+          className="flex flex-col items-center space-y-4 bg-card/45 backdrop-blur-md p-6 rounded-[2rem] border border-border/80 shadow-lg max-w-xl w-full"
         >
-          <h2 className="text-sm font-semibold flex items-center space-x-2">
-            <Compass className="h-4 w-4 text-brand-primary" />
+          <h2 className="text-xs font-bold uppercase tracking-wider flex items-center space-x-2 text-foreground/80">
+            <Compass className="h-4 w-4 text-brand-primary animate-spin-slow" />
             <span>Interactive Styling Sandbox (Test Themes)</span>
           </h2>
           
@@ -106,6 +112,7 @@ export default function LandingPage() {
               variant={themeMode === 'kids' ? 'primary' : 'outline'} 
               size="sm" 
               onClick={() => setThemeMode('kids')}
+              className="h-9"
             >
               👶 Kids Mode
             </Button>
@@ -113,20 +120,21 @@ export default function LandingPage() {
               variant={themeMode === 'normal' ? 'primary' : 'outline'} 
               size="sm" 
               onClick={() => setThemeMode('normal')}
+              className="h-9"
             >
               🎓 Normal Mode
             </Button>
           </div>
 
-          <div className="flex flex-wrap gap-2 justify-center border-t border-border/40 pt-4 w-full">
+          <div className="flex flex-wrap gap-1.5 justify-center border-t border-border/40 pt-4 w-full">
             {(['light', 'dark', 'neon', 'space', 'anime', 'minimal'] as const).map(color => (
               <button
                 key={color}
                 onClick={() => setThemeColor(color)}
-                className={`px-3 py-1.5 rounded-full text-xs font-medium capitalize border transition-all ${
+                className={`px-3 py-1.5 rounded-full text-xs font-semibold capitalize border transition-all ${
                   themeColor === color 
-                    ? 'bg-foreground text-background border-foreground shadow-sm'
-                    : 'bg-transparent text-foreground border-border hover:bg-card'
+                    ? 'bg-foreground text-background border-foreground shadow-md scale-105'
+                    : 'bg-transparent text-foreground/60 border-border/80 hover:border-border hover:bg-card/40'
                 }`}
               >
                 {color}
@@ -140,24 +148,25 @@ export default function LandingPage() {
           variants={containerVariants}
           initial="hidden"
           animate="show"
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 w-full pt-6"
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 w-full pt-4"
         >
           {/* Student */}
           <motion.div variants={itemVariants}>
-            <Card hoverEffect className="h-full flex flex-col justify-between">
-              <CardHeader>
-                <div className="h-10 w-10 rounded-xl bg-brand-secondary/10 flex items-center justify-center text-brand-secondary mb-2 mx-auto">
-                  <Gamepad2 className="h-5 w-5" />
+            <Card hoverEffect className="h-full flex flex-col justify-between overflow-hidden relative group">
+              <div className="absolute top-0 left-0 w-full h-1.5 bg-brand-secondary opacity-80" />
+              <CardHeader className="text-center pt-8">
+                <div className="h-12 w-12 rounded-2xl bg-brand-secondary/10 flex items-center justify-center text-brand-secondary mb-3 mx-auto border border-brand-secondary/15">
+                  <Gamepad2 className="h-5.5 w-5.5" />
                 </div>
-                <CardTitle>Sammy Star</CardTitle>
-                <CardDescription>Role: Student Profile</CardDescription>
+                <CardTitle className="font-extrabold">Sammy Star</CardTitle>
+                <CardDescription className="text-xs uppercase tracking-wider font-bold text-slate-400">Student Account</CardDescription>
               </CardHeader>
-              <CardContent className="space-y-4">
-                <p className="text-xs text-muted-foreground">
-                  Play math maps, view streaks, level up, unlock cosmetics, and consult your Student AI Tutor.
+              <CardContent className="space-y-5 text-center pb-8">
+                <p className="text-xs text-muted-foreground leading-relaxed">
+                  Sail Math Islands, earn coin points, consult the Socratic AI buddy, and use infinite drawing whiteboards.
                 </p>
-                <Button onClick={() => handleQuickLogin('student@learning.com')} variant="secondary" size="sm" className="w-full">
-                  Sign in as Student
+                <Button onClick={() => handleQuickLogin('student@learning.com')} variant="secondary" size="sm" className="w-full h-9">
+                  Test Student Dashboard
                 </Button>
               </CardContent>
             </Card>
@@ -165,20 +174,21 @@ export default function LandingPage() {
 
           {/* Teacher */}
           <motion.div variants={itemVariants}>
-            <Card hoverEffect className="h-full flex flex-col justify-between">
-              <CardHeader>
-                <div className="h-10 w-10 rounded-xl bg-brand-primary/10 flex items-center justify-center text-brand-primary mb-2 mx-auto">
-                  <GraduationCap className="h-5 w-5" />
+            <Card hoverEffect className="h-full flex flex-col justify-between overflow-hidden relative group">
+              <div className="absolute top-0 left-0 w-full h-1.5 bg-brand-primary opacity-80" />
+              <CardHeader className="text-center pt-8">
+                <div className="h-12 w-12 rounded-2xl bg-brand-primary/10 flex items-center justify-center text-brand-primary mb-3 mx-auto border border-brand-primary/15">
+                  <GraduationCap className="h-5.5 w-5.5" />
                 </div>
-                <CardTitle>Professor Sarah</CardTitle>
-                <CardDescription>Role: Teacher Profile</CardDescription>
+                <CardTitle className="font-extrabold">Professor Sarah</CardTitle>
+                <CardDescription className="text-xs uppercase tracking-wider font-bold text-slate-400">Teacher Account</CardDescription>
               </CardHeader>
-              <CardContent className="space-y-4">
-                <p className="text-xs text-muted-foreground">
-                  Access 1-click quiz builds, rubrics grading dashboard, AI lesson authoring, and analytics reports.
+              <CardContent className="space-y-5 text-center pb-8">
+                <p className="text-xs text-muted-foreground leading-relaxed">
+                  Draft AI quizzes in 1 click, auto-grade essay rubrics, build schedules, and inspect intervention analytics.
                 </p>
-                <Button onClick={() => handleQuickLogin('teacher@learning.com')} variant="primary" size="sm" className="w-full">
-                  Sign in as Teacher
+                <Button onClick={() => handleQuickLogin('teacher@learning.com')} variant="primary" size="sm" className="w-full h-9">
+                  Test Teacher Dashboard
                 </Button>
               </CardContent>
             </Card>
@@ -186,20 +196,21 @@ export default function LandingPage() {
 
           {/* Parent */}
           <motion.div variants={itemVariants}>
-            <Card hoverEffect className="h-full flex flex-col justify-between">
-              <CardHeader>
-                <div className="h-10 w-10 rounded-xl bg-brand-info/10 flex items-center justify-center text-brand-info mb-2 mx-auto">
-                  <Heart className="h-5 w-5" />
+            <Card hoverEffect className="h-full flex flex-col justify-between overflow-hidden relative group">
+              <div className="absolute top-0 left-0 w-full h-1.5 bg-brand-info opacity-80" />
+              <CardHeader className="text-center pt-8">
+                <div className="h-12 w-12 rounded-2xl bg-brand-info/10 flex items-center justify-center text-brand-info mb-3 mx-auto border border-brand-info/15">
+                  <Heart className="h-5.5 w-5.5" />
                 </div>
-                <CardTitle>Helen Star</CardTitle>
-                <CardDescription>Role: Parent Profile</CardDescription>
+                <CardTitle className="font-extrabold">Helen Star</CardTitle>
+                <CardDescription className="text-xs uppercase tracking-wider font-bold text-slate-400">Parent Account</CardDescription>
               </CardHeader>
-              <CardContent className="space-y-4">
-                <p className="text-xs text-muted-foreground">
-                  Monitor Sammy's homework, review weekly automated summaries, view attendance, and send chat notes.
+              <CardContent className="space-y-5 text-center pb-8">
+                <p className="text-xs text-muted-foreground leading-relaxed">
+                  Track streaks, review weekly child progress reports, read notifications, and chat with supervisors.
                 </p>
-                <Button onClick={() => handleQuickLogin('parent@learning.com')} variant="info" size="sm" className="w-full">
-                  Sign in as Parent
+                <Button onClick={() => handleQuickLogin('parent@learning.com')} variant="info" size="sm" className="w-full h-9">
+                  Test Parent Dashboard
                 </Button>
               </CardContent>
             </Card>
@@ -207,20 +218,21 @@ export default function LandingPage() {
 
           {/* Admin */}
           <motion.div variants={itemVariants}>
-            <Card hoverEffect className="h-full flex flex-col justify-between">
-              <CardHeader>
-                <div className="h-10 w-10 rounded-xl bg-brand-success/10 flex items-center justify-center text-brand-success mb-2 mx-auto">
-                  <ShieldCheck className="h-5 w-5" />
+            <Card hoverEffect className="h-full flex flex-col justify-between overflow-hidden relative group">
+              <div className="absolute top-0 left-0 w-full h-1.5 bg-brand-success opacity-80" />
+              <CardHeader className="text-center pt-8">
+                <div className="h-12 w-12 rounded-2xl bg-brand-success/10 flex items-center justify-center text-brand-success mb-3 mx-auto border border-brand-success/15">
+                  <ShieldCheck className="h-5.5 w-5.5" />
                 </div>
-                <CardTitle>System Admin</CardTitle>
-                <CardDescription>Role: Admin Profile</CardDescription>
+                <CardTitle className="font-extrabold">System Admin</CardTitle>
+                <CardDescription className="text-xs uppercase tracking-wider font-bold text-slate-400">Admin Account</CardDescription>
               </CardHeader>
-              <CardContent className="space-y-4">
-                <p className="text-xs text-muted-foreground">
-                  Access platform BI, cost sheets, API key generation, audit trails, and the AI Observatory tracker.
+              <CardContent className="space-y-5 text-center pb-8">
+                <p className="text-xs text-muted-foreground leading-relaxed">
+                  Review token costs, query prompts, log analytics, database capacities, and teacher approval flags.
                 </p>
-                <Button onClick={() => handleQuickLogin('admin@learning.com')} variant="success" size="sm" className="w-full">
-                  Sign in as Admin
+                <Button onClick={() => handleQuickLogin('admin@learning.com')} variant="success" size="sm" className="w-full h-9">
+                  Test Admin Dashboard
                 </Button>
               </CardContent>
             </Card>
@@ -229,8 +241,8 @@ export default function LandingPage() {
       </main>
 
       {/* Footer */}
-      <footer className="border-t border-border/40 py-6 text-center text-xs text-muted-foreground bg-card/10">
-        <p>© 2026 LearningMa Inc. Built on Next.js 15, Turborepo, Prisma, PostgreSQL, and Google Gemini.</p>
+      <footer className="border-t border-border/30 py-6 text-center text-[10px] text-muted-foreground bg-card/5 z-10">
+        <p>© 2026 Luminary Platform. Built on Next.js 15, Turborepo, Prisma, PostgreSQL, and Google Gemini.</p>
       </footer>
     </div>
   );

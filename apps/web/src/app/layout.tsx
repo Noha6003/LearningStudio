@@ -4,7 +4,7 @@ import { ThemeModeProvider } from "@/components/providers/theme-mode-provider";
 import { SessionProvider } from "@/components/providers/session-provider";
 
 export const metadata: Metadata = {
-  title: "LearningMa | The Operating System for Education",
+  title: "Luminary | The Operating System for Education",
   description: "An AI-powered, highly gamified and professional online learning platform.",
 };
 
