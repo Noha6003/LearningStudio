@@ -1,5 +1,5 @@
 datasource db {
-  provider = "postgresql"
+  provider = "sqlite"
   url      = env("DATABASE_URL")
 }
 
@@ -7,42 +7,11 @@ generator client {
   provider = "prisma-client-js"
 }
 
-enum Role {
-  SUPER_ADMIN
-  ORG_ADMIN
-  TEACHER
-  STUDENT
-  PARENT
-  DEVELOPER
-}
 
-enum QuestionType {
-  // Knowledge
-  QUIZ
-  TRUE_FALSE
-  TYPE_ANSWER
-  SLIDER
-  PIN_ANSWER
-  PUZZLE
-  MATCHING
-  FILL_IN_BLANK
-  // Opinion
-  POLL
-  SCALE
-  NPS_SCALE
-  DROP_PIN
-  WORD_CLOUD
-  OPEN_ENDED
-  BRAINSTORM
-}
 
-enum MarketplaceType {
-  COURSE
-  AI_AGENT
-  THEME
-  PLUGIN
-  QUESTION_BANK
-}
+
+
+
 
 model Organization {
   id            String         @id @default(cuid())
@@ -80,7 +49,7 @@ model User {
   name          String?
   email         String          @unique
   password      String?
-  role          Role            @default(STUDENT)
+  role          String            @default("STUDENT")
   language      String          @default("en")
   createdAt     DateTime        @default(now())
   updatedAt     DateTime        @updatedAt
@@ -103,7 +72,7 @@ model UserOrgLink {
   id             String       @id @default(cuid())
   userId         String
   organizationId String
-  roleInOrg      Role         @default(STUDENT)
+  roleInOrg      String         @default("STUDENT")
 
   user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
   org            Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
@@ -206,7 +175,7 @@ model AIMemory {
   weakTopics      String   @default("[]")
   strongTopics    String   @default("[]")
   preferredLanguage String @default("en")
-  mistakeLog      String   @db.Text
+  mistakeLog      String   
   lastUpdated     DateTime @updatedAt
 
   user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -248,7 +217,7 @@ model Announcement {
   id        String   @id @default(cuid())
   classId   String
   title     String
-  content   String   @db.Text
+  content   String   
   createdAt DateTime @default(now())
 
   class     Class    @relation(fields: [classId], references: [id], onDelete: Cascade)
@@ -259,7 +228,7 @@ model Course {
   classId     String?
   teacherId   String
   title       String
-  description String?  @db.Text
+  description String?  
   published   Boolean  @default(false)
   version     Int      @default(1)
   createdAt   DateTime @default(now())
@@ -288,7 +257,7 @@ model Lesson {
   id            String   @id @default(cuid())
   moduleId      String
   title         String
-  content       String   @db.Text
+  content       String   
   videoUrl      String?
   videoChapters String?
   audioUrl      String?
@@ -305,8 +274,8 @@ model Assignment {
   classId     String?
   lessonId    String?
   title       String
-  description String   @db.Text
-  rubric      String?  @db.Text
+  description String   
+  rubric      String?  
   dueDate     DateTime
   points      Int      @default(100)
   createdAt   DateTime @default(now())
@@ -323,9 +292,9 @@ model AssignmentSubmission {
   studentId       String
   submittedAt     DateTime @default(now())
   grade           Float?
-  feedback        String?  @db.Text
+  feedback        String?  
   plagiarismScore Float?
-  grammarFlags    String?  @db.Text
+  grammarFlags    String?  
 
   assignment      Assignment       @relation(fields: [assignmentId], references: [id], onDelete: Cascade)
   student         StudentProfile   @relation(fields: [studentId], references: [id], onDelete: Cascade)
@@ -336,8 +305,8 @@ model CourseProgress {
   id          String   @id @default(cuid())
   studentId   String
   courseId    String
-  completedLessons String[]
-  completedQuizzes String[]
+  completedLessons String @default("[]")
+  completedQuizzes String @default("[]")
   updatedAt   DateTime @updatedAt
 
   student     StudentProfile @relation(fields: [studentId], references: [id], onDelete: Cascade)
@@ -382,13 +351,13 @@ model Quiz {
 model Question {
   id               String       @id @default(cuid())
   quizId           String
-  type             QuestionType
-  text             String       @db.Text
+  type             String
+  text             String       
   mediaUrl         String?
   timeLimit        Int          @default(30)
   points           Int          @default(1000)
-  answerExplanation String?     @db.Text
-  hints            String[]
+  answerExplanation String?     
+  hints            String @default("[]")
   order            Int
 
   quiz             Quiz         @relation(fields: [quizId], references: [id], onDelete: Cascade)
@@ -410,12 +379,12 @@ model AnswerOption {
 model QuestionBank {
   id               String       @id @default(cuid())
   teacherId        String
-  type             QuestionType
-  text             String       @db.Text
+  type             String
+  text             String       
   mediaUrl         String?
   timeLimit        Int          @default(30)
-  answerExplanation String?     @db.Text
-  tags             String[]
+  answerExplanation String?     
+  tags             String @default("[]")
   favorite         Boolean      @default(false)
 
   teacher          TeacherProfile @relation(fields: [teacherId], references: [id], onDelete: Cascade)
@@ -471,8 +440,8 @@ model Document {
   title       String
   fileUrl     String
   fileType    String
-  content     String   @db.Text
-  summary     String?  @db.Text
+  content     String   
+  summary     String?  
   createdAt   DateTime @default(now())
 
   notebook    AINotebook @relation(fields: [notebookId], references: [id], onDelete: Cascade)
@@ -482,7 +451,7 @@ model AIChat {
   id          String   @id @default(cuid())
   notebookId  String
   role        String
-  content     String   @db.Text
+  content     String   
   createdAt   DateTime @default(now())
 
   notebook    AINotebook @relation(fields: [notebookId], references: [id], onDelete: Cascade)
@@ -491,8 +460,8 @@ model AIChat {
 model Flashcard {
   id          String   @id @default(cuid())
   notebookId  String
-  front       String   @db.Text
-  back        String   @db.Text
+  front       String   
+  back        String   
   createdAt   DateTime @default(now())
 
   notebook    AINotebook @relation(fields: [notebookId], references: [id], onDelete: Cascade)
@@ -506,7 +475,7 @@ model CanvasNode {
   y           Float
   width       Float      @default(200)
   height      Float      @default(150)
-  content     String?    @db.Text
+  content     String?    
   style       String?
 
   notebook    AINotebook @relation(fields: [notebookId], references: [id], onDelete: Cascade)
@@ -531,7 +500,7 @@ model VersionHistory {
   courseId    String?
   quizId      String?
   versionNum  Int
-  snapshot    String   @db.Text
+  snapshot    String   
   changedBy   String
   createdAt   DateTime @default(now())
 
@@ -630,7 +599,7 @@ model Workflow {
   teacherId   String
   name        String
   triggerEvent String
-  actionsJson String   @db.Text
+  actionsJson String   
   active      Boolean  @default(true)
 
   teacher     TeacherProfile @relation(fields: [teacherId], references: [id], onDelete: Cascade)
@@ -641,10 +610,10 @@ model MarketplaceListing {
   developerId String?
   title       String
   description String
-  type        MarketplaceType
+  type        String
   price       Int      @default(0)
   assetUrl    String?
-  metadata    String?  @db.Text
+  metadata    String?  
   downloads   Int      @default(0)
   rating      Float    @default(5.0)
   createdAt   DateTime @default(now())
@@ -657,7 +626,7 @@ model AuditLog {
   userId      String?
   action      String
   ipAddress   String?
-  details     String?  @db.Text
+  details     String?  
   createdAt   DateTime @default(now())
 
   user        User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
@@ -668,7 +637,7 @@ model ApiKey {
   userId      String
   keyHash     String   @unique
   name        String
-  scopes      String[]
+  scopes      String @default("[]")
   createdAt   DateTime @default(now())
 
   user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -691,7 +660,7 @@ model Message {
   classId     String?
   senderId    String
   receiverId  String?
-  content     String   @db.Text
+  content     String   
   createdAt   DateTime @default(now())
 
   class       Class?   @relation(fields: [classId], references: [id], onDelete: Cascade)
