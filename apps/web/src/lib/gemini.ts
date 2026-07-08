@@ -94,6 +94,121 @@ export async function gradeSubmission(rubric: string, studentEssay: string) {
   }
 }
 
+// AI Quiz Generator
+export async function generateQuizFromText(topicOrWords: string) {
+  if (!ai) {
+    // Return mock English learning quiz
+    return {
+      title: `Quiz: ${topicOrWords.slice(0, 30)}`,
+      questions: [
+        {
+          text: "What is the synonym of the word 'diligent'?",
+          options: ["Lazy", "Hardworking", "Fast", "Careless"],
+          correctAnswer: "Hardworking",
+          explanation: "Diligent means showing care and conscientiousness in one's work or duties; hardworking.",
+          timeLimit: 30,
+          points: 1000
+        },
+        {
+          text: "Which of the following is correct: 'She ______ to the store yesterday.'",
+          options: ["go", "goes", "went", "gone"],
+          correctAnswer: "went",
+          explanation: "We use the past tense form 'went' because 'yesterday' indicates a completed past action.",
+          timeLimit: 20,
+          points: 1000
+        }
+      ]
+    };
+  }
+
+  const prompt = `Create an English learning multiple-choice quiz based on the following topic or word list: "${topicOrWords}".
+  The quiz should contain 3 to 5 questions.
+  Provide the response strictly as a JSON object of this structure:
+  {
+    "title": "A short descriptive title for the quiz",
+    "questions": [
+      {
+        "text": "The question text in English",
+        "options": ["Option A", "Option B", "Option C", "Option D"],
+        "correctAnswer": "The exact string of the correct option matching one of the options",
+        "explanation": "A Socratic explanation in simple English explaining why this is correct",
+        "timeLimit": 30,
+        "points": 1000
+      }
+    ]
+  }`;
+
+  try {
+    const model = ai.getGenerativeModel({
+      model: 'gemini-1.5-flash',
+      generationConfig: { responseMimeType: 'application/json' }
+    });
+
+    const result = await model.generateContent(prompt);
+    return JSON.parse(result.response.text() || '{}');
+  } catch (error) {
+    console.error('❌ Quiz Generator Error:', error);
+    throw new Error('Failed to generate quiz.');
+  }
+}
+
+// AI Document Helper (NotebookLM replacement)
+export async function processDocumentContent(content: string) {
+  if (!ai) {
+    return {
+      summary: "This article discusses the structure of basic English sentence constructions. English sentences typically follow a Subject-Verb-Object (SVO) pattern, which creates a clear and logical order of actions.",
+      vocabulary: [
+        {
+          word: "Structure",
+          definition: "The arrangement of and relations between the parts or elements of something complex.",
+          definitionAr: "الهيكل / البناء",
+          exampleEn: "The building has a solid structure.",
+          exampleAr: "المبنى ذو هيكل متين."
+        },
+        {
+          word: "Logical",
+          definition: "According to the rules of logic or formal argument; reasonable.",
+          definitionAr: "منطقي",
+          exampleEn: "It is a logical choice to make.",
+          exampleAr: "إنه خيار منطقي."
+        }
+      ]
+    };
+  }
+
+  const prompt = `Analyze the following English text. Extract a summary of the text, and a vocabulary list of key words containing: their definition in English, definition/translation in Arabic, an example sentence in English, and the translation of that example sentence in Arabic.
+  
+  TEXT:
+  ${content}
+
+  Provide the response strictly as a JSON object of this structure:
+  {
+    "summary": "Detailed summary in simple English",
+    "vocabulary": [
+      {
+        "word": "The extracted English vocabulary word",
+        "definition": "The English definition",
+        "definitionAr": "Arabic definition/translation",
+        "exampleEn": "An example sentence in English using the word",
+        "exampleAr": "The translation of the example sentence in Arabic"
+      }
+    ]
+  }`;
+
+  try {
+    const model = ai.getGenerativeModel({
+      model: 'gemini-1.5-flash',
+      generationConfig: { responseMimeType: 'application/json' }
+    });
+
+    const result = await model.generateContent(prompt);
+    return JSON.parse(result.response.text() || '{}');
+  } catch (error) {
+    console.error('❌ Document processor Error:', error);
+    throw new Error('Failed to process document.');
+  }
+}
+
 // Mock Responses Repository
 function getMockResponse(role: string, prompt: string): string {
   const normalized = prompt.toLowerCase();

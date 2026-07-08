@@ -458,13 +458,17 @@ model AIChat {
 }
 
 model Flashcard {
-  id          String   @id @default(cuid())
-  notebookId  String
-  front       String   
-  back        String   
-  createdAt   DateTime @default(now())
+  id              String   @id @default(cuid())
+  notebookId      String
+  front           String   
+  back            String   
+  interval        Int      @default(1)
+  repetitionCount Int      @default(0)
+  easeFactor      Float    @default(2.5)
+  nextReviewDate  DateTime @default(now())
+  createdAt       DateTime @default(now())
 
-  notebook    AINotebook @relation(fields: [notebookId], references: [id], onDelete: Cascade)
+  notebook        AINotebook @relation(fields: [notebookId], references: [id], onDelete: Cascade)
 }
 
 model CanvasNode {
