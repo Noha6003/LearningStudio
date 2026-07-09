@@ -30,6 +30,7 @@ export function StudentDashboard({ user }: { user: any }) {
   const [quizzesList, setQuizzesList] = useState<any[]>([]);
   const [quizAttempts, setQuizAttempts] = useState<any[]>([]);
   const [streak, setStreak] = useState(0);
+  const [isAiEnabled, setIsAiEnabled] = useState<boolean | null>(null);
 
   // Load user language preference and initial DB counts
   useEffect(() => {
@@ -54,6 +55,9 @@ export function StudentDashboard({ user }: { user: any }) {
         setQuizzesList(quizData.quizzes || []);
         setQuizAttempts(quizData.attempts || []);
         setStreak(quizData.streak || 0);
+        if (quizData.aiEnabled !== undefined) {
+          setIsAiEnabled(quizData.aiEnabled);
+        }
       }
     } catch (err) {
       console.error('Error fetching dashboard stats:', err);
@@ -137,6 +141,19 @@ export function StudentDashboard({ user }: { user: any }) {
         </div>
       </header>
 
+      {isAiEnabled === false && (
+        <div className="mb-8 p-6 rounded-2xl bg-orange-500/10 border border-orange-500/25 text-orange-600 font-bold text-sm leading-relaxed flex items-start gap-3">
+          <span className="text-lg leading-none shrink-0">⚠️</span>
+          <div>
+            <strong>Gemini API Key is missing in your .env file!</strong>
+            <p className="text-xs text-slate-400 mt-1.5 font-medium leading-relaxed">
+              Live AI quiz generation and document translation will fallback to static demo items. 
+              Please add a valid <code>GEMINI_API_KEY</code> in your <code>.env</code> file to enable real-time AI capabilities.
+            </p>
+          </div>
+        </div>
+      )}
+
       {/* Primary Navigation Router */}
       <AnimatePresence mode="wait">
         {activeScreen === 'home' && (
@@ -149,8 +166,12 @@ export function StudentDashboard({ user }: { user: any }) {
           >
             
             {/* Play a Quiz Card */}
-            <Card hoverEffect className="p-8 border-2 border-border/60 hover:border-brand-primary/40 flex flex-col justify-between h-72">
-              <CardHeader className="p-0">
+            <Card 
+              hoverEffect 
+              onClick={() => setActiveScreen('quiz')}
+              className="p-8 border-2 border-border/60 hover:border-brand-primary/40 flex flex-col justify-between h-72 cursor-pointer select-none"
+            >
+              <CardHeader className="p-0 pointer-events-none">
                 <div className="h-14 w-14 rounded-2xl bg-brand-primary/10 flex items-center justify-center text-brand-primary mb-4 border border-brand-primary/15">
                   <Play className="h-7 w-7" />
                 </div>
@@ -158,17 +179,20 @@ export function StudentDashboard({ user }: { user: any }) {
                 <CardDescription className="text-sm pt-2 leading-relaxed text-slate-400">{t.playQuizDesc[lang]}</CardDescription>
               </CardHeader>
               <Button 
-                onClick={() => setActiveScreen('quiz')} 
                 variant="primary" 
-                className="w-full text-md font-bold py-3 mt-4 h-12"
+                className="w-full text-md font-bold py-3 mt-4 h-12 pointer-events-none"
               >
                 {t.startBtn[lang]}
               </Button>
             </Card>
 
             {/* Document Helper Card */}
-            <Card hoverEffect className="p-8 border-2 border-border/60 hover:border-brand-primary/40 flex flex-col justify-between h-72">
-              <CardHeader className="p-0">
+            <Card 
+              hoverEffect 
+              onClick={() => setActiveScreen('doc')}
+              className="p-8 border-2 border-border/60 hover:border-brand-primary/40 flex flex-col justify-between h-72 cursor-pointer select-none"
+            >
+              <CardHeader className="p-0 pointer-events-none">
                 <div className="h-14 w-14 rounded-2xl bg-brand-info/10 flex items-center justify-center text-brand-info mb-4 border border-brand-info/15">
                   <Upload className="h-7 w-7" />
                 </div>
@@ -176,17 +200,20 @@ export function StudentDashboard({ user }: { user: any }) {
                 <CardDescription className="text-sm pt-2 leading-relaxed text-slate-400">{t.uploadLessonDesc[lang]}</CardDescription>
               </CardHeader>
               <Button 
-                onClick={() => setActiveScreen('doc')} 
                 variant="info" 
-                className="w-full text-md font-bold py-3 mt-4 h-12"
+                className="w-full text-md font-bold py-3 mt-4 h-12 pointer-events-none"
               >
                 {t.startBtn[lang]}
               </Button>
             </Card>
 
             {/* Vocabulary Spaced Repetition Card */}
-            <Card hoverEffect className="p-8 border-2 border-border/60 hover:border-brand-primary/40 flex flex-col justify-between h-72">
-              <CardHeader className="p-0">
+            <Card 
+              hoverEffect 
+              onClick={() => setActiveScreen('flashcards')}
+              className="p-8 border-2 border-border/60 hover:border-brand-primary/40 flex flex-col justify-between h-72 cursor-pointer select-none"
+            >
+              <CardHeader className="p-0 pointer-events-none">
                 <div className="h-14 w-14 rounded-2xl bg-brand-secondary/10 flex items-center justify-center text-brand-secondary mb-4 border border-brand-secondary/15">
                   <Brain className="h-7 w-7" />
                 </div>
@@ -196,17 +223,20 @@ export function StudentDashboard({ user }: { user: any }) {
                 </CardDescription>
               </CardHeader>
               <Button 
-                onClick={() => setActiveScreen('flashcards')} 
                 variant="secondary" 
-                className="w-full text-md font-bold py-3 mt-4 h-12"
+                className="w-full text-md font-bold py-3 mt-4 h-12 pointer-events-none"
               >
                 {t.startBtn[lang]}
               </Button>
             </Card>
 
             {/* Pronunciation Practice Card */}
-            <Card hoverEffect className="p-8 border-2 border-border/60 hover:border-brand-primary/40 flex flex-col justify-between h-72">
-              <CardHeader className="p-0">
+            <Card 
+              hoverEffect 
+              onClick={() => setActiveScreen('pronounce')}
+              className="p-8 border-2 border-border/60 hover:border-brand-primary/40 flex flex-col justify-between h-72 cursor-pointer select-none"
+            >
+              <CardHeader className="p-0 pointer-events-none">
                 <div className="h-14 w-14 rounded-2xl bg-brand-success/10 flex items-center justify-center text-brand-success mb-4 border border-brand-success/15">
                   <Mic className="h-7 w-7" />
                 </div>
@@ -214,9 +244,8 @@ export function StudentDashboard({ user }: { user: any }) {
                 <CardDescription className="text-sm pt-2 leading-relaxed text-slate-400">{t.pronounceDesc[lang]}</CardDescription>
               </CardHeader>
               <Button 
-                onClick={() => setActiveScreen('pronounce')} 
                 variant="success" 
-                className="w-full text-md font-bold py-3 mt-4 h-12"
+                className="w-full text-md font-bold py-3 mt-4 h-12 pointer-events-none"
               >
                 {t.startBtn[lang]}
               </Button>
@@ -400,7 +429,7 @@ function QuizSubScreen({ lang, onBack }: { lang: 'en' | 'ar'; onBack: () => void
               value={topic}
               onChange={(e) => setTopic(e.target.value)}
               placeholder={t.topicPlaceholder[lang]}
-              className="w-full bg-background border border-border/80 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-brand-primary resize-none h-24 font-bold text-slate-800"
+              className="w-full bg-background border border-border/80 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-brand-primary resize-none h-24 font-bold text-foreground"
             />
             <Button 
               onClick={handleGenerate} 
@@ -422,7 +451,7 @@ function QuizSubScreen({ lang, onBack }: { lang: 'en' | 'ar'; onBack: () => void
               quizzes.map((quiz: any) => (
                 <Card key={quiz.id} className="p-5 border-2 flex items-center justify-between bg-card/40">
                   <div>
-                    <h4 className="font-extrabold text-md text-slate-800">{quiz.title}</h4>
+                    <h4 className="font-extrabold text-md text-foreground">{quiz.title}</h4>
                     <p className="text-xs text-slate-400 pt-1 font-medium">{quiz.description}</p>
                     <span className="text-[10px] uppercase font-bold text-slate-400 mt-2 inline-block">
                       {quiz.questions.length} {lang === 'en' ? 'Questions' : 'أسئلة'}
@@ -456,7 +485,7 @@ function QuizSubScreen({ lang, onBack }: { lang: 'en' | 'ar'; onBack: () => void
               </div>
 
               {/* Question Text */}
-              <h3 className="text-xl font-extrabold text-slate-800 leading-snug">
+              <h3 className="text-xl font-extrabold text-foreground leading-snug">
                 {quizQuestions[currentIdx]?.text}
               </h3>
 
@@ -464,19 +493,23 @@ function QuizSubScreen({ lang, onBack }: { lang: 'en' | 'ar'; onBack: () => void
               <div className="grid grid-cols-1 gap-3 pt-4">
                 {quizQuestions[currentIdx]?.options.map((opt: any) => {
                   const isSelected = opt.text === selectedOpt;
-                  let borderStyle = "border-border";
-                  let bgStyle = "bg-white hover:bg-slate-50";
+                  let borderStyle = "border-border text-foreground";
+                  let bgStyle = "bg-card hover:bg-muted/80";
 
                   if (submitted) {
                     if (opt.isCorrect) {
-                      borderStyle = "border-brand-success bg-brand-success/[0.04] text-brand-success";
+                      borderStyle = "border-brand-success bg-brand-success/10 text-brand-success";
+                      bgStyle = "";
                     } else if (isSelected) {
-                      borderStyle = "border-brand-danger bg-brand-danger/[0.04] text-brand-danger";
+                      borderStyle = "border-brand-danger bg-brand-danger/10 text-brand-danger";
+                      bgStyle = "";
                     } else {
-                      borderStyle = "border-border opacity-50";
+                      borderStyle = "border-border opacity-40 text-muted-foreground";
+                      bgStyle = "bg-card";
                     }
                   } else if (isSelected) {
-                    borderStyle = "border-brand-primary bg-brand-primary/[0.02]";
+                    borderStyle = "border-brand-primary bg-brand-primary/10 text-brand-primary";
+                    bgStyle = "";
                   }
 
                   return (
@@ -495,8 +528,8 @@ function QuizSubScreen({ lang, onBack }: { lang: 'en' | 'ar'; onBack: () => void
               {/* Explanation & Action bar */}
               {submitted && (
                 <div className="space-y-4 pt-4 border-t">
-                  <div className="bg-slate-50 border p-4 rounded-xl text-xs leading-relaxed text-slate-600">
-                    <strong className="block text-slate-700 font-bold mb-1">Explanation:</strong>
+                  <div className="bg-muted border p-4 rounded-xl text-xs leading-relaxed text-muted-foreground">
+                    <strong className="block text-foreground font-black mb-1">Explanation:</strong>
                     {quizQuestions[currentIdx]?.answerExplanation}
                   </div>
                   <div className="flex justify-end">
@@ -515,7 +548,7 @@ function QuizSubScreen({ lang, onBack }: { lang: 'en' | 'ar'; onBack: () => void
                 <Award className="h-9 w-9" />
               </div>
               <div>
-                <h3 className="text-2xl font-black text-slate-800">{t.results[lang]}</h3>
+                <h3 className="text-2xl font-black text-foreground">{t.results[lang]}</h3>
                 <p className="text-sm text-slate-400 mt-1">{t.finalScore[lang]}</p>
                 <div className="text-4xl font-black text-brand-success mt-3">{score} XP</div>
               </div>
@@ -648,14 +681,14 @@ function DocSubScreen({ lang, onBack }: { lang: 'en' | 'ar'; onBack: () => void 
         {/* Left Side: Paste content */}
         <div className="space-y-4 lg:col-span-1">
           <Card className="p-6 border-2 border-border/40 bg-card/25">
-            <h3 className="text-md font-bold mb-1 text-slate-800">{t.title[lang]}</h3>
+            <h3 className="text-md font-bold mb-1 text-foreground">{t.title[lang]}</h3>
             <p className="text-xs text-slate-400 mb-4">{t.desc[lang]}</p>
             
             <textarea
               value={content}
               onChange={(e) => setContent(e.target.value)}
               placeholder="Paste English content here..."
-              className="w-full bg-background border border-border/80 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-brand-primary resize-none h-48 font-semibold text-slate-800"
+              className="w-full bg-background border border-border/80 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-brand-primary resize-none h-48 font-semibold text-foreground"
             />
 
             <Button 
@@ -676,15 +709,15 @@ function DocSubScreen({ lang, onBack }: { lang: 'en' | 'ar'; onBack: () => void 
               
               {/* Summary Block */}
               <Card className="p-6 border-2 border-border/40 bg-card/45">
-                <h3 className="text-md font-extrabold mb-2 text-slate-800">{t.summary[lang]}</h3>
-                <p className="text-sm text-slate-600 leading-relaxed font-semibold">{summary}</p>
+                <h3 className="text-md font-extrabold mb-2 text-foreground">{t.summary[lang]}</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed font-semibold">{summary}</p>
               </Card>
 
               {/* Vocab List */}
               {vocab.length > 0 && (
                 <Card className="p-6 border-2 border-border/40 bg-card/45">
                   <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
-                    <h3 className="text-md font-extrabold text-slate-800">{t.vocab[lang]}</h3>
+                    <h3 className="text-md font-extrabold text-foreground">{t.vocab[lang]}</h3>
                     {!imported ? (
                       <Button onClick={handleImportVocab} variant="success" size="sm">
                         {t.addDeck[lang]}
@@ -703,9 +736,9 @@ function DocSubScreen({ lang, onBack }: { lang: 'en' | 'ar'; onBack: () => void 
                           <strong className="text-brand-primary text-md">{v.word}</strong>
                           <span className="text-xs text-slate-400">({v.definitionAr})</span>
                         </div>
-                        <p className="text-xs text-slate-500 mt-1">Definition: {v.definition}</p>
+                        <p className="text-xs text-muted-foreground mt-1">Definition: {v.definition}</p>
                         
-                        <div className="mt-2 pl-3 border-l-2 border-brand-primary/20 text-xs text-slate-600 space-y-1">
+                        <div className="mt-2 pl-3 border-l-2 border-brand-primary/20 text-xs text-foreground space-y-1">
                           <p>Example: "{v.exampleEn}"</p>
                           <p className="opacity-80">مثال: "{v.exampleAr}"</p>
                         </div>
@@ -845,7 +878,7 @@ function FlashcardSubScreen({ lang, onBack }: { lang: 'en' | 'ar'; onBack: () =>
       {cards.length === 0 ? (
         <Card className="max-w-xl mx-auto p-12 border-2 text-center bg-card/40 space-y-4">
           <CheckCircle className="h-14 w-14 text-brand-success mx-auto" />
-          <h3 className="text-xl font-black text-slate-800">{t.completeTitle[lang]}</h3>
+          <h3 className="text-xl font-black text-foreground">{t.completeTitle[lang]}</h3>
           <p className="text-sm text-slate-500 font-semibold">{t.noCards[lang]}</p>
         </Card>
       ) : !complete ? (
@@ -854,12 +887,12 @@ function FlashcardSubScreen({ lang, onBack }: { lang: 'en' | 'ar'; onBack: () =>
             Card {currentIdx + 1} of {cards.length}
           </div>
 
-          <Card className="border-3 p-12 text-center bg-white min-h-[300px] flex flex-col justify-between shadow-sm rounded-3xl">
+          <Card className="border-3 p-12 text-center bg-card text-card-foreground min-h-[300px] flex flex-col justify-between shadow-sm rounded-3xl">
             
             {/* FRONT SIDE (Word) */}
             <div className="my-auto space-y-6">
               <span className="text-[10px] font-black text-brand-primary uppercase tracking-widest">Vocabulary Word</span>
-              <h1 className="text-4xl md:text-5xl font-black text-slate-800 tracking-tight leading-tight">
+              <h1 className="text-4xl md:text-5xl font-black text-foreground tracking-tight leading-tight">
                 {cards[currentIdx]?.front}
               </h1>
             </div>
@@ -870,7 +903,7 @@ function FlashcardSubScreen({ lang, onBack }: { lang: 'en' | 'ar'; onBack: () =>
                 <motion.div 
                   initial={{ opacity: 0, height: 0 }}
                   animate={{ opacity: 1, height: 'auto' }}
-                  className="border-t pt-6 text-left space-y-3 mt-6 text-xs text-slate-600 font-semibold whitespace-pre-wrap leading-relaxed"
+                  className="border-t pt-6 text-left space-y-3 mt-6 text-xs text-foreground bg-muted p-4 rounded-xl font-semibold whitespace-pre-wrap leading-relaxed"
                 >
                   {cards[currentIdx]?.back}
                 </motion.div>
@@ -909,7 +942,7 @@ function FlashcardSubScreen({ lang, onBack }: { lang: 'en' | 'ar'; onBack: () =>
         /* COMPLETED DECK PAGE */
         <Card className="max-w-xl mx-auto p-12 border-2 text-center bg-card/40 space-y-4">
           <CheckCircle className="h-14 w-14 text-brand-success mx-auto animate-bounce" />
-          <h3 className="text-xl font-black text-slate-800">{t.completeTitle[lang]}</h3>
+          <h3 className="text-xl font-black text-foreground">{t.completeTitle[lang]}</h3>
           <p className="text-sm text-slate-500 font-semibold">{t.completeDesc[lang]}</p>
           <Button onClick={onBack} variant="primary" className="mt-4">
             {t.back[lang]}
@@ -1018,7 +1051,7 @@ function PronunciationSubScreen({ lang, onBack }: { lang: 'en' | 'ar'; onBack: (
         {/* Target sentence display */}
         <div className="space-y-2">
           <span className="text-[10px] font-black text-brand-primary uppercase tracking-wider">{t.practiceHeader[lang]}</span>
-          <h2 className="text-xl md:text-2xl font-extrabold text-slate-800 leading-snug">
+          <h2 className="text-xl md:text-2xl font-extrabold text-foreground leading-snug">
             "{practiceSentences[sentenceIdx]}"
           </h2>
         </div>
@@ -1045,7 +1078,7 @@ function PronunciationSubScreen({ lang, onBack }: { lang: 'en' | 'ar'; onBack: (
           <div className="border-t pt-6 space-y-4 text-left font-semibold">
             <div className="text-sm">
               <span className="text-slate-400 block text-xs font-bold uppercase mb-1">{t.said[lang]}</span>
-              <p className="text-slate-700 font-mono text-sm">"{transcript}"</p>
+              <p className="text-foreground font-mono bg-muted p-3 rounded-xl text-sm">"{transcript}"</p>
             </div>
 
             {matchScore !== null && (

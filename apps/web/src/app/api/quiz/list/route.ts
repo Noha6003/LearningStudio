@@ -73,7 +73,7 @@ export async function GET(req: Request) {
       }
     }
 
-    return NextResponse.json({ quizzes, attempts, streak });
+    return NextResponse.json({ quizzes, attempts, streak, aiEnabled: !!process.env.GEMINI_API_KEY });
   } catch (error: any) {
     console.error('❌ Quiz List Error:', error);
     return NextResponse.json({ error: 'Server error' }, { status: 500 });
