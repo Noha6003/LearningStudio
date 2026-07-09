@@ -5,8 +5,9 @@ import { signIn, useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { GraduationCap, ArrowRight, Globe, Lock } from 'lucide-react';
 import { motion } from 'framer-motion';
+import Link from 'next/link';
+import { GraduationCap, ArrowRight, Globe, Lock } from 'lucide-react';
 
 export default function LandingClient() {
   const { data: session, status } = useSession();
@@ -176,6 +177,42 @@ export default function LandingClient() {
                 >
                   {loading ? t.loading[lang] : t.signInBtn[lang]}
                 </Button>
+
+                <div className="pt-4 border-t border-white/5 text-center mt-4">
+                  <p className="text-[10px] text-slate-500 mb-2">
+                    {lang === 'en' ? "Testing or auditing? Try our instant demo access:" : "للتجربة والتقييم، جربي الدخول السريع للمنصة:"}
+                  </p>
+                  <div className="flex flex-wrap justify-center gap-1.5">
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={() => {
+                        setEmail('student@luminary.com');
+                        setPassword('password');
+                      }}
+                      className="text-[10px] h-7 px-2 border-white/10 hover:bg-white/5 hover:text-indigo-400 font-bold"
+                    >
+                      {lang === 'en' ? "Student Acc" : "حساب طالب"}
+                    </Button>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={() => {
+                        setEmail('teacher@luminary.com');
+                        setPassword('password');
+                      }}
+                      className="text-[10px] h-7 px-2 border-white/10 hover:bg-white/5 hover:text-indigo-400 font-bold"
+                    >
+                      {lang === 'en' ? "Teacher Acc" : "حساب معلم"}
+                    </Button>
+                    <Link 
+                      href="/demo" 
+                      className="text-[10px] h-7 px-2.5 flex items-center justify-center border border-indigo-500/30 rounded-lg hover:bg-indigo-500/10 text-indigo-400 font-bold transition-all"
+                    >
+                      {lang === 'en' ? "Browse Demo ↗" : "تصفح العرض المباشر ↗"}
+                    </Link>
+                  </div>
+                </div>
               </form>
             )}
 
@@ -185,7 +222,7 @@ export default function LandingClient() {
 
       {/* Footer */}
       <footer className="border-t border-white/5 py-6 text-center text-[10px] text-slate-500 bg-slate-950/20 z-10">
-        <p>© 2026 Luminary Studio. Designed for English study and vocabulary practice.</p>
+        <p>© 2026 Luminary. The AI-powered operating system for education, interactive classrooms, and live learning games.</p>
       </footer>
     </div>
   );

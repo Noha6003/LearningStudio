@@ -40,7 +40,18 @@ export default function DashboardPage() {
   const userName = session.user?.name || 'User';
 
   const renderDashboard = () => {
-    return <StudentDashboard user={session.user} />;
+    switch (role) {
+      case 'TEACHER':
+        return <TeacherDashboard user={session.user} />;
+      case 'PARENT':
+        return <ParentDashboard user={session.user} />;
+      case 'SUPER_ADMIN':
+      case 'ADMIN':
+        return <AdminDashboard user={session.user} />;
+      case 'STUDENT':
+      default:
+        return <StudentDashboard user={session.user} />;
+    }
   };
 
   return (
