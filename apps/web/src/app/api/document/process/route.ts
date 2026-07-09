@@ -47,7 +47,7 @@ export async function POST(req: Request) {
       });
     }
 
-    // Find or create Noha's AINotebook
+    // Find or create Student's AINotebook
     let notebook = await db.aINotebook.findFirst({
       where: { studentId: student.id }
     });

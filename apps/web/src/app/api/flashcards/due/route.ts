@@ -29,7 +29,7 @@ export async function GET(req: Request) {
       return NextResponse.json({ cards: [] });
     }
 
-    // Find Noha's AINotebook
+    // Find Student's AINotebook
     const notebook = await db.aINotebook.findFirst({
       where: { studentId: student.id }
     });

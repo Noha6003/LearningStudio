@@ -79,7 +79,7 @@ export function StudentDashboard({ user }: { user: any }) {
 
   // Translations Dictionary
   const t = {
-    welcome: { en: "Welcome back, Noha!", ar: "مرحباً بكِ مجدداً، نهى!" },
+    welcome: { en: "Welcome back!", ar: "مرحباً بكِ مجدداً!" },
     playQuiz: { en: "Play a Quiz", ar: "العب اختباراً" },
     playQuizDesc: { en: "Practice vocabulary with multiple-choice questions.", ar: "تمرّني على المفردات باستخدام أسئلة الاختيار من متعدد." },
     uploadLesson: { en: "Upload a Lesson", ar: "دراسة مستند" },
@@ -857,7 +857,7 @@ function FlashcardSubScreen({ lang, onBack }: { lang: 'en' | 'ar'; onBack: () =>
     easy: { en: "Easy", ar: "سهل" },
     medium: { en: "Medium", ar: "متوسط" },
     hard: { en: "Hard", ar: "صعب" },
-    completeTitle: { en: "Great Job, Noha!", ar: "عمل رائع، نهى!" },
+    completeTitle: { en: "Great Job!", ar: "عمل رائع!" },
     completeDesc: { en: "You have reviewed all due vocabulary words for today.", ar: "لقد راجعتِ جميع الكلمات المستحقة لليوم." },
     noCards: { en: "No vocabulary due today! Master more words by uploading lessons.", ar: "لا توجد كلمات مستحقة اليوم! تعلّمي كلمات جديدة برفع مستندات للدرس." }
   };

@@ -58,7 +58,7 @@ export default function LandingPage() {
     passcodeLabel: { en: "Password / Passcode", ar: "كلمة المرور / الرمز" },
     signInBtn: { en: "Enter Study Deck", ar: "دخول منصة الدراسة" },
     loading: { en: "Logging in...", ar: "يجري تسجيل الدخول..." },
-    welcomeNoha: { en: "Hello, Noha!", ar: "مرحباً بكِ، نهى!" },
+    welcomeUser: { en: "Welcome Back!", ar: "مرحباً بكِ مجدداً!" },
     welcomeDesc: { en: "You are logged in. Click below to open your daily vocabulary deck, quizzes, and lessons.", ar: "لقد قمتِ بتسجيل الدخول. اضغطي أدناه لفتح بطاقات الكلمات اليومية، الاختبارات، والدروس." },
     goDashboard: { en: "Go to Dashboard", ar: "الذهاب للوحة الدراسة" }
   };
@@ -109,7 +109,7 @@ export default function LandingPage() {
                   <GraduationCap className="h-9 w-9" />
                 </div>
                 <div>
-                  <h3 className="text-2xl font-black">{t.welcomeNoha[lang]}</h3>
+                  <h3 className="text-2xl font-black">{t.welcomeUser[lang]}</h3>
                   <p className="text-sm text-slate-400 mt-2 leading-relaxed">{t.welcomeDesc[lang]}</p>
                 </div>
                 <Button 
@@ -147,7 +147,7 @@ export default function LandingPage() {
                       type="email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      placeholder="noha@gmail.com"
+                      placeholder="student@gmail.com"
                       className="w-full bg-slate-950 border border-white/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-indigo-500 font-semibold text-slate-100"
                       required
                     />
